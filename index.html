@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bigbrain Data Hub</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f7fa;
+      color: #111;
+    }
+
+    header {
+      background: #008751;
+      color: white;
+      padding: 25px 18px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 15px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 25px auto;
+      padding: 0 18px;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: #008751;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #006f42;
+    }
+
+    .info {
+      background: #e9f8f0;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Bigbrain Data Hub</h1>
+  <p>Affordable MTN Data Bundles</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Place Your Order</h2>
+
+    <label>Your Name</label>
+    <input type="text" id="name" placeholder="Enter your name">
+
+    <label>MTN Phone Number</label>
+    <input type="tel" id="phone" placeholder="024XXXXXXX">
+
+    <label>Select Data Bundle</label>
+    <select id="bundle">
+      <option value="">Choose a bundle</option>
+      <option value="1GB - GH₵5">1GB — GH₵5</option>
+      <option value="2GB - GH₵9">2GB — GH₵9</option>
+      <option value="3GB - GH₵13">3GB — GH₵13</option>
+      <option value="5GB - GH₵20">5GB — GH₵20</option>
+      <option value="10GB - GH₵35">10GB — GH₵35</option>
+      <option value="20GB - GH₵60">20GB — GH₵60</option>
+    </select>
+
+    <button onclick="placeOrder()">Place Order</button>
+
+    <div class="info">
+      <strong>How it works:</strong><br>
+      1. Select your bundle.<br>
+      2. Enter your MTN number.<br>
+      3. Place your order.<br>
+      4. We manually process your order.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Bigbrain Data Hub
+</footer>
+
+<script>
+function placeOrder() {
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const bundle = document.getElementById("bundle").value;
+
+  if (!name || !phone || !bundle) {
+    alert("Please complete all fields.");
+    return;
+  }
+
+  const message =
+    "Hello Bigbrain Data Hub,%0A%0A" +
+    "I want to place a data order.%0A" +
+    "Name: " + name + "%0A" +
+    "MTN Number: " + phone + "%0A" +
+    "Bundle: " + bundle;
+
+  window.location.href =
+    "https://wa.me/?text=" + message;
+}
+</script>
+
+</body>
+</html>
