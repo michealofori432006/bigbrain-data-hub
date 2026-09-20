@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bigbrain Data Hub</title>
-  <!-- Paystack -->
   <script src="https://js.paystack.co/v2/inline.js"></script>
   <style>
     * {
@@ -20,7 +19,7 @@
     header {
       background: #008751;
       color: white;
-      padding: 25px 18px;
+      padding: 28px 18px;
       text-align: center;
     }
     header h1 {
@@ -38,12 +37,11 @@
     .card {
       background: white;
       padding: 22px;
-      margin-bottom: 18px;
       border-radius: 12px;
       box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
     h2 {
-      margin-bottom: 15px;
+      margin-bottom: 18px;
     }
     label {
       display: block;
@@ -51,12 +49,14 @@
       margin-bottom: 6px;
       font-weight: bold;
     }
-    input, select {
+    input,
+    select {
       width: 100%;
       padding: 13px;
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
+      background: white;
     }
     button {
       width: 100%;
@@ -70,14 +70,22 @@
       font-weight: bold;
       cursor: pointer;
     }
-    button:hover {
-      background: #006f42;
+    button:disabled {
+      background: #999;
     }
     .info {
       background: #e9f8f0;
       padding: 15px;
       border-radius: 8px;
+      margin-top: 18px;
+      line-height: 1.6;
+    }
+    #status {
+      display: none;
       margin-top: 15px;
+      padding: 13px;
+      border-radius: 8px;
+      text-align: center;
       line-height: 1.5;
     }
     footer {
@@ -96,11 +104,26 @@
 <div class="container">
   <div class="card">
     <h2>Place Your Order</h2>
-    <label>Your Name</label>
-    <input type="text" id="name" placeholder="Enter your name">
-    <label>MTN Phone Number</label>
-    <input type="tel" id="phone" placeholder="024XXXXXXX">
-    <label>Select Data Bundle</label>
+    <label for="name">Your Name</label>
+    <input
+      type="text"
+      id="name"
+      placeholder="Enter your name"
+    >
+    <label for="phone">MTN Phone Number</label>
+    <input
+      type="tel"
+      id="phone"
+      placeholder="024XXXXXXX"
+      inputmode="numeric"
+    >
+    <label for="email">Email Address</label>
+    <input
+      type="email"
+      id="email"
+      placeholder="Enter your email"
+    >
+    <label for="bundle">Select Data Bundle</label>
     <select id="bundle">
       <option value="">Choose a bundle</option>
       <option value="1GB" data-price="5">1GB — GH₵5</option>
@@ -110,13 +133,18 @@
       <option value="10GB" data-price="35">10GB — GH₵35</option>
       <option value="20GB" data-price="60">20GB — GH₵60</option>
     </select>
-    <button onclick="payNow()">Pay for Data</button>
+    <button id="payButton" onclick="payNow()">
+      Pay for Data
+    </button>
+    <div id="status"></div>
     <div class="info">
-      <strong>How it works:</strong><br>
-      1. Enter your name and MTN number.<br>
-      2. Select your data bundle.<br>
-      3. Pay securely through Paystack.<br>
-      4. Your order is manually processed.
+      <strong>How it works:</strong><br><br>
+      1. Enter your name.<br>
+      2. Enter your MTN number.<br>
+      3. Enter your email.<br>
+      4. Select your data bundle.<br>
+      5. Pay securely through Paystack.<br>
+      6. Your order is manually processed.
     </div>
   </div>
 </div>
@@ -125,61 +153,247 @@
 </footer>
 <script>
   /*
-   =====================================================
-   YOUR PAYSTACK LIVE PUBLIC KEY GOES HERE
-   =====================================================
-   Replace ONLY the text between the quotation marks.
-   Example:
-   const PAYSTACK_PUBLIC_KEY = "pk_live_xxxxxxxxxxxxx";
-   NEVER put your Paystack SECRET KEY here.
-   =====================================================
+  =====================================================
+  PAYSTACK PUBLIC KEY
+  =====================================================
   */
-  const PAYSTACK_PUBLIC_KEY = "PASTE_YOUR_LIVE_PUBLIC_KEY_HERE";
-  function payNow() {
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const bundleSelect = document.getElementById("bundle");
+  const PAYSTACK_PUBLIC_KEY =
+    "pk_live_4f1103c282de7db8097a0934c079c6fa01cbe8ce";
+  /*
+  =====================================================
+  CLOUDFLARE WORKER
+  =====================================================
+  */
+  const WORKER_URL =
+    "https://bigbrain-paystack.michealofori432006.workers.dev";
+  /*
+  =====================================================
+  YOUR WHATSAPP NUMBER
+  =====================================================
+  */
+  const WHATSAPP_NUMBER =
+    "233545977497";
+  /*
+  =====================================================
+  STATUS MESSAGE
+  =====================================================
+  */
+  function showStatus(message, success = false) {
+    const status =
+      document.getElementById("status");
+    status.textContent = message;
+    status.style.display = "block";
+    status.style.background =
+      success ? "#e9f8f0" : "#ffeaea";
+    status.style.color =
+      success ? "#006f42" : "#a00000";
+  }
+  /*
+  =====================================================
+  PAYMENT
+  =====================================================
+  */
+  async function payNow() {
+    const name =
+      document.getElementById("name").value.trim();
+    const phone =
+      document.getElementById("phone").value.trim();
+    const email =
+      document.getElementById("email").value.trim();
+    const bundleSelect =
+      document.getElementById("bundle");
     const selectedOption =
-      bundleSelect.options[bundleSelect.selectedIndex];
-    const bundle = selectedOption.value;
-    const price = selectedOption.getAttribute("data-price");
-    if (!name || !phone || !bundle || !price) {
-      alert("Please complete all fields.");
-      return;
-    }
-    if (PAYSTACK_PUBLIC_KEY === "PASTE_YOUR_LIVE_PUBLIC_KEY_HERE") {
-      alert("Paystack has not been connected yet.");
+      bundleSelect.options[
+        bundleSelect.selectedIndex
+      ];
+    const bundle =
+      selectedOption.value;
+    const price =
+      selectedOption.getAttribute("data-price");
+    const button =
+      document.getElementById("payButton");
+    /*
+    CHECK FORM
+    */
+    if (!name || !phone || !email || !bundle) {
+      showStatus(
+        "Please complete all fields."
+      );
       return;
     }
     /*
-      IMPORTANT:
-      This opens Paystack's checkout.
-      The secure backend/payment verification
-      will be added before you accept real customer
-      orders.
+    CHECK EMAIL
     */
-    const paystack = new PaystackPop();
-    paystack.newTransaction({
-      key:pk_live_4f1103c282de7db8097a0934c079c6fa01cbe8ce,
-      email: "customer@example.com",
-      amount: Number(price) * 100,
-      currency: "GHS",
-      onSuccess: function(transaction) {
-        const message =
-          "Hello Bigbrain Data Hub,%0A%0A" +
-          "PAYMENT SUCCESSFUL%0A" +
-          "Name: " + encodeURIComponent(name) + "%0A" +
-          "MTN Number: " + encodeURIComponent(phone) + "%0A" +
-          "Bundle: " + encodeURIComponent(bundle) + "%0A" +
-          "Amount: GH₵" + encodeURIComponent(price) + "%0A" +
-          "Reference: " + encodeURIComponent(transaction.reference);
-        window.location.href =
-          "https://wa.me/233545977497?text=" + message;
-      },
-      onCancel: function() {
-        alert("Payment cancelled.");
+    if (!email.includes("@")) {
+      showStatus(
+        "Please enter a valid email address."
+      );
+      return;
+    }
+    /*
+    CHECK PAYSTACK
+    */
+    if (
+      typeof PaystackPop === "undefined"
+    ) {
+      showStatus(
+        "Paystack is still loading. Please refresh the page."
+      );
+      return;
+    }
+    button.disabled = true;
+    button.textContent =
+      "Starting payment...";
+    try {
+      /*
+      =================================================
+      STEP 1
+      ASK CLOUDFLARE WORKER TO INITIALIZE PAYMENT
+      =================================================
+      */
+      const response =
+        await fetch(
+          WORKER_URL + "/paystack",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              email: email,
+              amount:
+                Number(price) * 100,
+              currency: "GHS",
+              metadata: {
+                customer_name: name,
+                mtn_number: phone,
+                data_bundle: bundle
+              }
+            })
+          }
+        );
+      const result =
+        await response.json();
+      /*
+      IF WORKER DOES NOT RESPOND CORRECTLY
+      */
+      if (
+        !response.ok ||
+        !result.status
+      ) {
+        throw new Error(
+          result.message ||
+          "Unable to start payment."
+        );
       }
-    });
+      /*
+      =================================================
+      STEP 2
+      OPEN PAYSTACK CHECKOUT
+      =================================================
+      */
+      const paystack =
+        new PaystackPop();
+      paystack.newTransaction({
+        key: PAYSTACK_PUBLIC_KEY,
+        email: email,
+        amount:
+          Number(price) * 100,
+        currency: "GHS",
+        metadata: {
+          customer_name: name,
+          mtn_number: phone,
+          data_bundle: bundle
+        },
+        /*
+        =================================================
+        SUCCESS
+        =================================================
+        */
+        onSuccess: function(transaction) {
+          const reference =
+            transaction.reference;
+          showStatus(
+            "Payment successful! Your order has been received.",
+            true
+          );
+          /*
+          CREATE YOUR ORDER MESSAGE
+          */
+          const message =
+            "NEW BIGBRAIN DATA ORDER" +
+            "\n\n" +
+            "Name: " +
+            name +
+            "\n" +
+            "MTN Number: " +
+            phone +
+            "\n" +
+            "Bundle: " +
+            bundle +
+            "\n" +
+            "Amount: GH₵" +
+            price +
+            "\n" +
+            "Email: " +
+            email +
+            "\n" +
+            "Paystack Reference: " +
+            reference;
+          /*
+          OPEN WHATSAPP
+          */
+          const whatsappURL =
+            "https://wa.me/" +
+            WHATSAPP_NUMBER +
+            "?text=" +
+            encodeURIComponent(message);
+          setTimeout(function() {
+            window.location.href =
+              whatsappURL;
+          }, 1500);
+          button.disabled = false;
+          button.textContent =
+            "Pay for Data";
+        },
+        /*
+        =================================================
+        CANCELLED
+        =================================================
+        */
+        onCancel: function() {
+          showStatus(
+            "Payment cancelled."
+          );
+          button.disabled = false;
+          button.textContent =
+            "Pay for Data";
+        },
+        /*
+        =================================================
+        ERROR
+        =================================================
+        */
+        onError: function(error) {
+          console.error(error);
+          showStatus(
+            "There was a problem with the payment."
+          );
+          button.disabled = false;
+          button.textContent =
+            "Pay for Data";
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      showStatus(
+        error.message ||
+        "Unable to start payment."
+      );
+      button.disabled = false;
+      button.textContent =
+        "Pay for Data";
+    }
   }
 </script>
 </body>
