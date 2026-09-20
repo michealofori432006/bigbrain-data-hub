@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bigbrain Data Hub</title>
-  <script src="https://js.paystack.co/v2/inline.js"></script>
+  <title>Affordable Data Hub</title>
+
   <style>
     * {
       box-sizing: border-box;
@@ -12,389 +12,232 @@
       padding: 0;
       font-family: Arial, sans-serif;
     }
+
     body {
-      background: #f5f7fa;
-      color: #111;
+      background: #f5f7fb;
+      color: #222;
     }
+
     header {
-      background: #008751;
-      color: white;
-      padding: 28px 18px;
+      background: #ffcc00;
+      padding: 25px 15px;
       text-align: center;
     }
+
     header h1 {
       font-size: 28px;
-      margin-bottom: 8px;
+      color: #111;
     }
+
     header p {
-      font-size: 15px;
+      margin-top: 8px;
+      color: #333;
     }
+
     .container {
-      max-width: 600px;
+      max-width: 500px;
       margin: 25px auto;
-      padding: 0 18px;
+      padding: 15px;
     }
+
     .card {
       background: white;
-      padding: 22px;
-      border-radius: 12px;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 15px;
       box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
-    h2 {
-      margin-bottom: 18px;
+
+    .card h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
     }
-    label {
-      display: block;
-      margin-top: 14px;
-      margin-bottom: 6px;
+
+    .package {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .package:hover {
+      border-color: #ffcc00;
+    }
+
+    .package input {
+      margin-right: 10px;
+    }
+
+    .price {
       font-weight: bold;
     }
-    input,
-    select {
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: bold;
+    }
+
+    input[type="tel"],
+    input[type="email"] {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
-      background: white;
     }
+
     button {
       width: 100%;
       margin-top: 20px;
-      padding: 14px;
-      background: #008751;
-      color: white;
+      padding: 15px;
       border: none;
       border-radius: 8px;
+      background: #111;
+      color: white;
       font-size: 17px;
       font-weight: bold;
       cursor: pointer;
     }
-    button:disabled {
-      background: #999;
+
+    button:hover {
+      background: #333;
     }
-    .info {
-      background: #e9f8f0;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 18px;
-      line-height: 1.6;
-    }
-    #status {
-      display: none;
+
+    #message {
       margin-top: 15px;
-      padding: 13px;
-      border-radius: 8px;
       text-align: center;
-      line-height: 1.5;
+      font-weight: bold;
     }
+
     footer {
       text-align: center;
       padding: 25px;
-      color: #666;
+      color: #777;
       font-size: 14px;
     }
   </style>
 </head>
+
 <body>
-<header>
-  <h1>Bigbrain Data Hub</h1>
-  <p>Affordable MTN Data Bundles</p>
-</header>
-<div class="container">
-  <div class="card">
-    <h2>Place Your Order</h2>
-    <label for="name">Your Name</label>
-    <input
-      type="text"
-      id="name"
-      placeholder="Enter your name"
-    >
-    <label for="phone">MTN Phone Number</label>
-    <input
-      type="tel"
-      id="phone"
-      placeholder="024XXXXXXX"
-      inputmode="numeric"
-    >
-    <label for="email">Email Address</label>
-    <input
-      type="email"
-      id="email"
-      placeholder="Enter your email"
-    >
-    <label for="bundle">Select Data Bundle</label>
-    <select id="bundle">
-      <option value="">Choose a bundle</option>
-      <option value="1GB" data-price="5">1GB — GH₵5</option>
-      <option value="2GB" data-price="9">2GB — GH₵9</option>
-      <option value="3GB" data-price="13">3GB — GH₵13</option>
-      <option value="5GB" data-price="20">5GB — GH₵20</option>
-      <option value="10GB" data-price="35">10GB — GH₵35</option>
-      <option value="20GB" data-price="60">20GB — GH₵60</option>
-    </select>
-    <button id="payButton" onclick="payNow()">
-      Pay for Data
-    </button>
-    <div id="status"></div>
-    <div class="info">
-      <strong>How it works:</strong><br><br>
-      1. Enter your name.<br>
-      2. Enter your MTN number.<br>
-      3. Enter your email.<br>
-      4. Select your data bundle.<br>
-      5. Pay securely through Paystack.<br>
-      6. Your order is manually processed.
+
+  <header>
+    <h1>Affordable Data Hub</h1>
+    <p>Fast & Affordable MTN Data Bundles</p>
+  </header>
+
+  <div class="container">
+
+    <div class="card">
+      <h2>Choose Your MTN Data</h2>
+
+      <label class="package">
+        <span>
+          <input type="radio" name="bundle" value="1GB" data-price="5">
+          1GB
+        </span>
+        <span class="price">GH₵5</span>
+      </label>
+
+      <label class="package">
+        <span>
+          <input type="radio" name="bundle" value="2GB" data-price="10">
+          2GB
+        </span>
+        <span class="price">GH₵10</span>
+      </label>
+
+      <label class="package">
+        <span>
+          <input type="radio" name="bundle" value="3GB" data-price="15">
+          3GB
+        </span>
+        <span class="price">GH₵15</span>
+      </label>
+
+      <label class="package">
+        <span>
+          <input type="radio" name="bundle" value="5GB" data-price="25">
+          5GB
+        </span>
+        <span class="price">GH₵25</span>
+      </label>
+
+      <label class="package">
+        <span>
+          <input type="radio" name="bundle" value="10GB" data-price="50">
+          10GB
+        </span>
+        <span class="price">GH₵50</span>
+      </label>
+
+      <label for="phone">MTN Phone Number</label>
+      <input
+        type="tel"
+        id="phone"
+        placeholder="024 XXXXXXX"
+        maxlength="10"
+      >
+
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="you@example.com"
+      >
+
+      <button onclick="payForData()">
+        Pay for Data
+      </button>
+
+      <div id="message"></div>
     </div>
+
   </div>
-</div>
-<footer>
-  © 2026 Bigbrain Data Hub
-</footer>
-<script>
-  /*
-  =====================================================
-  PAYSTACK PUBLIC KEY
-  =====================================================
-  */
-  const PAYSTACK_PUBLIC_KEY =
-  pk_live_4f1103c282de7db8097a0934c079c6fa01cbe8ce";
-  /*
-  =====================================================
-  CLOUDFLARE WORKER
-  =====================================================
-  */
-  const WORKER_URL =
-    "https://bigbrain-paystack.michealofori432006.workers.dev";
-  /*
-  =====================================================
-  YOUR WHATSAPP NUMBER
-  =====================================================
-  */
-  const WHATSAPP_NUMBER =
-    "233545977497";
-  /*
-  =====================================================
-  STATUS MESSAGE
-  =====================================================
-  */
-  function showStatus(message, success = false) {
-    const status =
-      document.getElementById("status");
-    status.textContent = message;
-    status.style.display = "block";
-    status.style.background =
-      success ? "#e9f8f0" : "#ffeaea";
-    status.style.color =
-      success ? "#006f42" : "#a00000";
-  }
-  /*
-  =====================================================
-  PAYMENT
-  =====================================================
-  */
-  async function payNow() {
-    const name =
-      document.getElementById("name").value.trim();
-    const phone =
-      document.getElementById("phone").value.trim();
-    const email =
-      document.getElementById("email").value.trim();
-    const bundleSelect =
-      document.getElementById("bundle");
-    const selectedOption =
-      bundleSelect.options[
-        bundleSelect.selectedIndex
-      ];
-    const bundle =
-      selectedOption.value;
-    const price =
-      selectedOption.getAttribute("data-price");
-    const button =
-      document.getElementById("payButton");
-    /*
-    CHECK FORM
-    */
-    if (!name || !phone || !email || !bundle) {
-      showStatus(
-        "Please complete all fields."
+
+  <footer>
+    © 2026 Affordable Data Hub
+  </footer>
+
+  <script>
+    function payForData() {
+
+      const bundle = document.querySelector(
+        'input[name="bundle"]:checked'
       );
-      return;
-    }
-    /*
-    CHECK EMAIL
-    */
-    if (!email.includes("@")) {
-      showStatus(
-        "Please enter a valid email address."
-      );
-      return;
-    }
-    /*
-    CHECK PAYSTACK
-    */
-    if (
-      typeof PaystackPop === "undefined"
-    ) {
-      showStatus(
-        "Paystack is still loading. Please refresh the page."
-      );
-      return;
-    }
-    button.disabled = true;
-    button.textContent =
-      "Starting payment...";
-    try {
-      /*
-      =================================================
-      STEP 1
-      ASK CLOUDFLARE WORKER TO INITIALIZE PAYMENT
-      =================================================
-      */
-      const response =
-        await fetch(
-          WORKER_URL + "/paystack",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              email: email,
-              amount:
-                Number(price) * 100,
-              currency: "GHS",
-              metadata: {
-                customer_name: name,
-                mtn_number: phone,
-                data_bundle: bundle
-              }
-            })
-          }
-        );
-      const result =
-        await response.json();
-      /*
-      IF WORKER DOES NOT RESPOND CORRECTLY
-      */
-      if (
-        !response.ok ||
-        !result.status
-      ) {
-        throw new Error(
-          result.message ||
-          "Unable to start payment."
-        );
+
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message");
+
+      if (!bundle) {
+        message.textContent = "Please select a data bundle.";
+        return;
       }
-      /*
-      =================================================
-      STEP 2
-      OPEN PAYSTACK CHECKOUT
-      =================================================
-      */
-      const paystack =
-        new PaystackPop();
-      paystack.newTransaction({
-        key: PAYSTACK_PUBLIC_KEY,
-        email: email,
-        amount:
-          Number(price) * 100,
-        currency: "GHS",
-        metadata: {
-          customer_name: name,
-          mtn_number: phone,
-          data_bundle: bundle
-        },
-        /*
-        =================================================
-        SUCCESS
-        =================================================
-        */
-        onSuccess: function(transaction) {
-          const reference =
-            transaction.reference;
-          showStatus(
-            "Payment successful! Your order has been received.",
-            true
-          );
-          /*
-          CREATE YOUR ORDER MESSAGE
-          */
-          const message =
-            "NEW BIGBRAIN DATA ORDER" +
-            "\n\n" +
-            "Name: " +
-            name +
-            "\n" +
-            "MTN Number: " +
-            phone +
-            "\n" +
-            "Bundle: " +
-            bundle +
-            "\n" +
-            "Amount: GH₵" +
-            price +
-            "\n" +
-            "Email: " +
-            email +
-            "\n" +
-            "Paystack Reference: " +
-            reference;
-          /*
-          OPEN WHATSAPP
-          */
-          const whatsappURL =
-            "https://wa.me/" +
-            WHATSAPP_NUMBER +
-            "?text=" +
-            encodeURIComponent(message);
-          setTimeout(function() {
-            window.location.href =
-              whatsappURL;
-          }, 1500);
-          button.disabled = false;
-          button.textContent =
-            "Pay for Data";
-        },
-        /*
-        =================================================
-        CANCELLED
-        =================================================
-        */
-        onCancel: function() {
-          showStatus(
-            "Payment cancelled."
-          );
-          button.disabled = false;
-          button.textContent =
-            "Pay for Data";
-        },
-        /*
-        =================================================
-        ERROR
-        =================================================
-        */
-        onError: function(error) {
-          console.error(error);
-          showStatus(
-            "There was a problem with the payment."
-          );
-          button.disabled = false;
-          button.textContent =
-            "Pay for Data";
-        }
-      });
-    } catch (error) {
-      console.error(error);
-      showStatus(
-        error.message ||
-        "Unable to start payment."
-      );
-      button.disabled = false;
-      button.textContent =
-        "Pay for Data";
+
+      if (!/^0[235679][0-9]{8}$/.test(phone)) {
+        message.textContent = "Please enter a valid Ghana phone number.";
+        return;
+      }
+
+      if (!email || !email.includes("@")) {
+        message.textContent = "Please enter a valid email.";
+        return;
+      }
+
+      const packageName = bundle.value;
+      const price = bundle.dataset.price;
+
+      message.textContent =
+        "Selected " + packageName +
+        " for GH₵" + price +
+        ". Payment connection coming next.";
     }
-  }
-</script>
+  </script>
+
 </body>
 </html>
