@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Bigbrain Data Hub</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      color: #111;
+    }
+
+    header {
+      background: #ffcc00;
+      padding: 25px 15px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    header p {
+      margin-top: 7px;
+      font-size: 14px;
+    }
+
+    nav {
+      background: #111;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav button {
+      flex: 1;
+      max-width: 250px;
+      padding: 15px;
+      border: none;
+      background: #111;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .network-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .mtn-logo {
+      width: 75px;
+      height: 75px;
+      background: #ffcc00;
+      border: 3px solid #111;
+      border-radius: 50%;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .network-card h2 {
+      margin-top: 12px;
+    }
+
+    .network-card p {
+      margin-top: 5px;
+      color: #666;
+    }
+
+    .box {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .box h2 {
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .bundle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      margin-bottom: 10px;
+      border: 2px solid #eee;
+      border-radius: 11px;
+      cursor: pointer;
+    }
+
+    .bundle:active {
+      border-color: #ffcc00;
+    }
+
+    .bundle-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bundle input {
+      width: 18px;
+      height: 18px;
+    }
+
+    .bundle-name {
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .price {
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    label {
+      display: block;
+      margin-top: 17px;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input[type="tel"],
+    input[type="email"],
+    input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 9px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #ffcc00;
+    }
+
+    .main-button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 20px;
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    #message,
+    #trackingResult {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 1.6;
+    }
+
+    .info {
+      margin-top: 18px;
+      padding: 15px;
+      background: #fff8cc;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 15px;
+      background: #fff8cc;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    #trackSection {
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Bigbrain Data Hub</h1>
+  <p>Fast & Affordable Data Bundles</p>
+</header>
+
+<nav>
+  <button onclick="showBuy()">Buy Data</button>
+  <button onclick="showTrack()">Track Order</button>
+</nav>
+
+<div class="container">
+
+  <!-- MTN -->
+  <div class="network-card">
+
+    <div class="mtn-logo">
+      MTN
+    </div>
+
+    <h2>MTN Data Bundles</h2>
+
+    <p>Select your preferred bundle</p>
+
+  </div>
+
+
+  <!-- BUY DATA -->
+  <div id="buySection">
+
+    <div class="box">
+
+      <h2>Choose Data Bundle</h2>
+
+      <div class="bundle">
+        <div class="bundle-left">
+          <input
+            type="radio"
+            name="bundle"
+            value="1GB"
+            data-price="5">
+          <span class="bundle-name">1GB</span>
+        </div>
+
+        <span class="price">GH₵5</span>
+      </div>
+
+
+      <div class="bundle">
+        <div class="bundle-left">
+          <input
+            type="radio"
+            name="bundle"
+            value="2GB"
+            data-price="10">
+          <span class="bundle-name">2GB</span>
+        </div>
+
+        <span class="price">GH₵10</span>
+      </div>
+
+
+      <div class="bundle">
+        <div class="bundle-left">
+          <input
+            type="radio"
+            name="bundle"
+            value="3GB"
+            data-price="15">
+          <span class="bundle-name">3GB</span>
+        </div>
+
+        <span class="price">GH₵15</span>
+      </div>
+
+
+      <div class="bundle">
+        <div class="bundle-left">
+          <input
+            type="radio"
+            name="bundle"
+            value="5GB"
+            data-price="25">
+          <span class="bundle-name">5GB</span>
+        </div>
+
+        <span class="price">GH₵25</span>
+      </div>
+
+
+      <div class="bundle">
+        <div class="bundle-left">
+          <input
+            type="radio"
+            name="bundle"
+            value="10GB"
+            data-price="50">
+          <span class="bundle-name">10GB</span>
+        </div>
+
+        <span class="price">GH₵50</span>
+      </div>
+
+
+      <!-- PHONE -->
+      <label for="phone">
+        MTN Number
+      </label>
+
+      <input
+        type="tel"
+        id="phone"
+        placeholder="024 XXXXXXX"
+        maxlength="10"
+      >
+
+
+      <!-- OPTIONAL EMAIL -->
+      <label for="email">
+        Email Address (Optional)
+      </label>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="you@example.com"
+      >
+
+
+      <button
+        class="main-button"
+        onclick="buyData()">
+
+        Continue to Payment
+
+      </button>
+
+
+      <div id="message"></div>
+
+
+      <div class="info">
+
+        <strong>How it works</strong><br><br>
+
+        1. Select your data bundle.<br>
+
+        2. Enter the MTN number that should receive the data.<br>
+
+        3. Email is optional.<br>
+
+        4. Continue to payment.
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- TRACK ORDER -->
+  <div id="trackSection">
+
+    <div class="box">
+
+      <h2>Track Your Order</h2>
+
+      <label for="orderId">
+        Order ID
+      </label>
+
+      <input
+        type="text"
+        id="orderId"
+        placeholder="Enter your Order ID"
+      >
+
+      <button
+        class="main-button"
+        onclick="trackOrder()">
+
+        Track Order
+
+      </button>
+
+      <div id="trackingResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<footer>
+  © 2026 Bigbrain Data Hub
+</footer>
+
+
+<script>
+
+function showBuy() {
+
+  document.getElementById("buySection").style.display = "block";
+
+  document.getElementById("trackSection").style.display = "none";
+
+}
+
+
+function showTrack() {
+
+  document.getElementById("buySection").style.display = "none";
+
+  document.getElementById("trackSection").style.display = "block";
+
+}
+
+
+function buyData() {
+
+  const bundle =
+    document.querySelector(
+      'input[name="bundle"]:checked'
+    );
+
+  const phone =
+    document.getElementById("phone").value.trim();
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const message =
+    document.getElementById("message");
+
+
+  if (!bundle) {
+
+    message.innerText =
+      "Please select a data bundle.";
+
+    return;
+
+  }
+
+
+  if (!phone) {
+
+    message.innerText =
+      "Please enter the MTN number.";
+
+    return;
+
+  }
+
+
+  if (
+    phone.length !== 10 ||
+    !phone.startsWith("0")
+  ) {
+
+    message.innerText =
+      "Please enter a valid 10-digit MTN number.";
+
+    return;
+
+  }
+
+
+  message.innerText =
+    "Selected " +
+    bundle.value +
+    " for GH₵" +
+    bundle.dataset.price +
+    ". Payment connection coming next.";
+
+}
+
+
+function trackOrder() {
+
+  const orderId =
+    document.getElementById("orderId").value.trim();
+
+  const result =
+    document.getElementById("trackingResult");
+
+
+  if (!orderId) {
+
+    result.innerHTML =
+      '<div class="status">' +
+      'Please enter your Order ID.' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  result.innerHTML =
+    '<div class="status">' +
+    '<strong>Order ID:</strong> ' +
+    orderId +
+    '<br><br>' +
+    'Status: Order received' +
+    '<br><br>' +
+    'Your order status will appear here.' +
+    '</div>';
+
+}
+
+</script>
+
+</body>
+</html>
